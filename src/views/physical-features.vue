@@ -9,6 +9,8 @@
         <option>Wetland/Pond</option>
         <option>Stream/River</option>
         <option>Forest Gap</option>
+        <option>Field</option>
+        <option>Development</option>
         <option>Other</option>
     </select>
     <br>
@@ -38,7 +40,7 @@
     <br><br>
 
 
-    <span>what signs of human degradation are there on the site?</span>
+    <span>What signs of human degradation are there on the site?</span>
     <br>
     <select v-model="selected">
         <option selected="true" disabled="disabled">Please select one</option>
@@ -103,7 +105,7 @@
     <br>
     <select v-model="selected">
         <option selected="true" disabled="disabled">Please select one</option>
-        <option>no</option>
+        <option>none</option>
         <option>Lots</option>
         <option>Medium amounts </option>
         <option>Low amounts</option>
@@ -144,7 +146,7 @@
     
 
     <br>
-    <span> what type of geography do you see?</span>
+    <span> What type of geography do you see?</span>
     <br>
     <select v-model="selected">
         <option selected="true" disabled="disabled">Please select one</option>
@@ -207,7 +209,7 @@
         <option>Mostly deciduous</option>
         <option>Mostly evergreen</option>
         <option>Equal of both types</option>
-        <option>No tress near bat house</option>
+        <option>No trees near bat house</option>
     </select>
 
 
@@ -221,7 +223,7 @@
         <option>Mostly deciduous</option>
         <option>Mostly conifer</option>
         <option>Equal of both types</option>
-        <option>No tress near bat house</option>
+        <option>No trees near bat house</option>
     </select>
 
     <br>
@@ -236,7 +238,6 @@
     <select v-model="selected">
         <option selected="true" disabled="disabled">Please select one</option>
         <option>Small - about a foot long</option>
-        <option>Only conifer</option>
         <option>Medium - one-three feet long</option>
         <option>Large - bigger than three feet long</option>
     </select>
@@ -265,9 +266,8 @@
         <option>Building</option>
         <option>Pole by itself</option>
         <option>Tree</option>
+        <option>Pole with another bat house, back to back</option>
         <option>Other</option>
-        <option>Pole with another bat house</option>
-        <option>back to back</option>
     </select>
 
 
@@ -321,7 +321,7 @@
 
     <br>
     <label for="start">Date of the bathouse installation: </label>
-    <input type="date" id="start" name="house-install" min="2019-04-23">
+    <input type="date" id="start" name="house-install">
 
     <br><br>
     <input type="submit" value="Submit">
