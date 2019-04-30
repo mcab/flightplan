@@ -72,6 +72,12 @@ export default new IonicVueRouter({
         import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreatePhysicalFeatures.vue")
     },
     {
+      path: "/houses/:id/observations/create",
+      name: "house-observation-create",
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateObservation.vue")
+    },
+    {
       path: "*",
       redirect: { name: "home" }
     }
