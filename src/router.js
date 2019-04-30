@@ -1,5 +1,6 @@
 import Vue from "vue";
 import { IonicVueRouter } from "@ionic/vue";
+import About from "@/views/About.vue";
 import Home from "@/views/Home.vue";
 import store from "@/store";
 
@@ -25,33 +26,50 @@ export default new IonicVueRouter({
     {
       path: "/about",
       name: "about",
-      component: () => import("@/views/About.vue")
+      component: About
     },
     {
       path: "/account",
       name: "account",
-      component: () => import("@/views/Account.vue"),
+      component: () =>
+        import(/* webpackChunkName: "auth" */ "@/views/Account.vue"),
       beforeEnter: privateRoute
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("@/views/Login.vue")
+      component: () =>
+        import(/* webpackChunkName: "auth" */ "@/views/Login.vue")
     },
     {
       path: "/signup",
       name: "signup",
-      component: () => import("@/views/Signup.vue")
+      component: () =>
+        import(/* webpackChunkName: "auth" */ "@/views/Signup.vue")
     },
     {
       path: "/houses",
       name: "houses",
-      component: () => import("@/views/bathouse/ListBatHouse.vue")
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListBatHouse.vue")
     },
     {
       path: "/houses/create",
       name: "house-create",
-      component: () => import("@/views/bathouse/CreateBatHouse.vue")
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateBatHouse.vue")
+    },
+    {
+      path: "/houses/:id/environment/create",
+      name: "house-environment-create",
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateEnvironmentFeatures.vue")
+    },
+    {
+      path: "/houses/:id/physical/create",
+      name: "house-physical-create",
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreatePhysicalFeatures.vue")
     },
     {
       path: "*",
