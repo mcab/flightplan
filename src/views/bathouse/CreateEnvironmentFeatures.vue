@@ -153,21 +153,15 @@
 
           <ion-item>
             <ion-label position="stacked">Tree type</ion-label>
-            <ion-range
-              min="0"
-              max="5"
-              step="1"
-              snaps="true"
-              ticks="true"
-              @ionChange="payload.tree_type = $event.target.value"
-            >
-              <ion-icon slot="start" name="leaf" size="small"></ion-icon>
-              <ion-icon slot="end" name="leaf"></ion-icon>
-            </ion-range>
-            <ion-note
-              >0 is no trees, 1 is all deciduous, 5 is all
-              evergreen/coniferous</ion-note
-            >
+            <ion-select @ionChange="payload.tree_type = $event.target.value">
+              <ion-select-option
+                v-for="(label, value) in choices.treeType"
+                :key="value"
+                text-wrap
+                :value="value"
+                >{{ label }}</ion-select-option
+              >
+            </ion-select>
           </ion-item>
         </ion-item-group>
 
@@ -481,6 +475,14 @@ export default {
           OT: "Other"
         },
         slope: { F: "Flat", G: "Gentle", U: "Undulating", S: "Steep" },
+        treeType: {
+          0: "No trees nearby",
+          1: "All deciduous trees",
+          2: "Many deciduous trees",
+          3: "Split of deciduous and evergreen trees",
+          4: "Many evergreen trees",
+          5: "All evergreen trees"
+        },
         waterResourceUnits: {
           FT: "Feet (ft)",
           KM: "Kilometers (km)",
