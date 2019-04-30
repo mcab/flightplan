@@ -1,8 +1,8 @@
 <template>
   <ion-app id="app">
     <ion-split-pane>
-      <Menu/>
-      <ion-vue-router main :animated="false" id="menu-content" />
+      <Menu />
+      <ion-vue-router id="menu-content" main :animated="false" />
     </ion-split-pane>
   </ion-app>
 </template>
@@ -14,5 +14,5 @@ export default {
   components: {
     Menu
   }
-}
+};
 </script>
