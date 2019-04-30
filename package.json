@@ -43,6 +43,7 @@
     },
     "extends": [
       "plugin:vue/essential",
+      "plugin:vue/recommended",
       "@vue/prettier"
     ],
     "rules": {},
@@ -85,8 +86,5 @@
       "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/"
-  },
-  "prettier": {
-    "endOfLine": "crlf"
   }
 }
