@@ -59,6 +59,11 @@ export default new IonicVueRouter({
       component: () => import("@/views/bathouse/CreateEnvironmentFeatures.vue")
     },
     {
+      path: "/houses/:id/physical/create",
+      name: "house-physical-create",
+      component: () => import("@/views/bathouse/CreatePhysicalFeatures.vue")
+    },
+    {
       path: "*",
       redirect: { name: "home" }
     }
