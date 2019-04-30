@@ -60,7 +60,8 @@
                 v-for="(label, value) in choices.acousticMonitor"
                 :key="value"
                 :value="value"
-              >{{ label }}</ion-select-option>
+                >{{ label }}</ion-select-option
+              >
             </ion-select>
           </ion-item>
 
@@ -73,7 +74,9 @@
           </ion-item>
         </ion-item-group>
 
-        <ion-button expand="block" @click="submitPayload">Submit Form</ion-button>
+        <ion-button expand="block" @click="submitPayload"
+          >Submit Form</ion-button
+        >
       </template>
     </ion-content>
   </div>
