@@ -5,10 +5,10 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title
-          >Add Environment Survey for Bat House ID
-          {{ $route.params.id }}</ion-title
-        >
+        <ion-title>
+          Add Environment Survey for Bat House ID
+          {{ $route.params.id }}
+        </ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content padding>
@@ -17,10 +17,10 @@
           <ion-label>Prelude</ion-label>
         </ion-item-divider>
         <ion-item>
-          <ion-label text-wrap position="stacked"
-            >Have you completed an environmental assessment of this bat house
-            this year?</ion-label
-          >
+          <ion-label text-wrap position="stacked">
+            Have you completed an environmental assessment of this bat house
+            this year?
+          </ion-label>
           <ion-select
             placeholder="Select One"
             :value="doneThisYear"
@@ -39,10 +39,9 @@
       <template v-if="doneThisYear === 'N' || doneThisYear === 'U'">
         <ion-item-group>
           <ion-item-divider sticky="true">
-            <ion-label text-wrap
-              >Stand underneath the bathouse, and select those that
-              apply.</ion-label
-            >
+            <ion-label text-wrap>
+              Stand underneath the bathouse, and select those that apply.
+            </ion-label>
           </ion-item-divider>
 
           <ion-item>
@@ -373,6 +372,15 @@
           </ion-item-divider>
 
           <ion-item>
+            <ion-label position="stacked">Surveyed on</ion-label>
+            <ion-datetime
+              display-format="MMMM DD, YYYY"
+              :value="payload.surveyed"
+              @ionChange="payload.surveyed = $event.target.value"
+            ></ion-datetime>
+          </ion-item>
+
+          <ion-item>
             <ion-textarea
               placeholder="Add additional information about the bat house here"
               @ionChange="payload.other_features = $event.target.value"
@@ -387,10 +395,10 @@
       <template v-if="doneThisYear === 'Y'">
         <ion-item-group>
           <ion-item>
-            <ion-text
-              >You don't need to submit another form for the rest of this year.
-              Thank you!</ion-text
-            >
+            <ion-text>
+              You don't need to submit another form for the rest of this year.
+              Thank you!
+            </ion-text>
           </ion-item>
         </ion-item-group>
       </template>
@@ -491,6 +499,7 @@ export default {
         }
       },
       payload: {
+        surveyed: new Date(),
         habitat_type: [],
         other_habitat_type: "",
         habitat_degradation: [],
