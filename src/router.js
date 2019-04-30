@@ -54,6 +54,11 @@ export default new IonicVueRouter({
       component: () => import("@/views/bathouse/CreateBatHouse.vue")
     },
     {
+      path: "/houses/:id/environment/create",
+      name: "house-environment-create",
+      component: () => import("@/views/bathouse/CreateEnvironmentFeatures.vue")
+    },
+    {
       path: "*",
       redirect: { name: "home" }
     }
