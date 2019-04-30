@@ -8,9 +8,10 @@
     <ion-content>
       <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>Ionic and Vue is</ion-card-subtitle>
-          <ion-card-title>AWESOME!</ion-card-title>
+          <ion-card-title>Ionic and Vue</ion-card-title>
+          <ion-card-subtitle>A match made in heaven</ion-card-subtitle>
         </ion-card-header>
+        <ion-card-content>The content!</ion-card-content>
       </ion-card>
     </ion-content>
   </ion-app>
