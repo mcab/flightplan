@@ -14,7 +14,7 @@ const privateRoute = function(to, from, next) {
 };
 
 export default new IonicVueRouter({
-  mode: process.env.CORDOVA_PLATFORM ? "hash" : "history",
+  mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
