@@ -14,7 +14,7 @@ const privateRoute = function(to, from, next) {
 };
 
 export default new IonicVueRouter({
-  mode: "history",
+  mode: process.env.CORDOVA_PLATFORM ? "hash" : "history",
   base: process.env.BASE_URL,
   routes: [
     {
@@ -42,6 +42,20 @@ export default new IonicVueRouter({
       path: "/signup",
       name: "signup",
       component: () => import("@/views/Signup.vue")
+    },
+    {
+      path: "/houses",
+      name: "houses",
+      component: () => import("@/views/bathouse/ListBatHouse.vue")
+    },
+    {
+      path: "/houses/create",
+      name: "house-create",
+      component: () => import("@/views/bathouse/CreateBatHouse.vue")
+    },
+    {
+      path: "*",
+      redirect: { name: "home" }
     }
   ]
 });
