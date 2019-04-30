@@ -32,6 +32,16 @@ export default new IonicVueRouter({
       name: "account",
       component: () => import("@/views/Account.vue"),
       beforeEnter: privateRoute
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/Login.vue")
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: () => import("@/views/Signup.vue")
     }
   ]
 });
