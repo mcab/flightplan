@@ -10,29 +10,29 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@ionic/core": "^4.1.2",
-    "@ionic/vue": "0.0.2",
+    "@ionic/core": "^4.3.1",
+    "@ionic/vue": "0.0.4",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
-    "vue-router": "^3.0.1",
+    "vue-router": "^3.0.6",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-plugin-e2e-cypress": "^3.5.0",
-    "@vue/cli-plugin-eslint": "^3.5.0",
-    "@vue/cli-plugin-pwa": "^3.5.0",
-    "@vue/cli-plugin-unit-jest": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-e2e-cypress": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-plugin-pwa": "^3.7.0",
+    "@vue/cli-plugin-unit-jest": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
     "@vue/eslint-config-prettier": "^4.0.1",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
-    "eslint": "^5.8.0",
+    "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "fibers": "^3.1.1",
-    "sass": "^1.17.2",
+    "sass": "^1.19.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
@@ -43,6 +43,7 @@
     },
     "extends": [
       "plugin:vue/essential",
+      "plugin:vue/recommended",
       "@vue/prettier"
     ],
     "rules": {},
