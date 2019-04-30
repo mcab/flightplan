@@ -81,7 +81,6 @@ export default {
   data() {
     return {
       useAutoGeolocation: true,
-      today: new Date(),
       propertyType: {
         ST: "State",
         TO: "Town",
