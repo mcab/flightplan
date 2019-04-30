@@ -1,18 +1,18 @@
 <template>
   <ion-app id="app">
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>Example</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Ionic and Vue</ion-card-title>
-          <ion-card-subtitle>A match made in heaven</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>The content!</ion-card-content>
-      </ion-card>
-    </ion-content>
+    <ion-split-pane>
+      <Menu/>
+      <ion-vue-router main :animated="false" id="menu-content" />
+    </ion-split-pane>
   </ion-app>
 </template>
+
+<script>
+import Menu from "./components/Menu.vue";
+
+export default {
+  components: {
+    Menu
+  }
+}
+</script>
