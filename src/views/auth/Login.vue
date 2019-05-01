@@ -24,8 +24,13 @@
               @ionChange="payload.username = $event.target.value"
             ></ion-input>
           </ion-item>
-          <ion-text v-if="submitted && $v.payload.username.$error" color="danger">
-            <p v-if="!$v.payload.username.required" padding-left>Username is required</p>
+          <ion-text
+            v-if="submitted && $v.payload.username.$error"
+            color="danger"
+          >
+            <p v-if="!$v.payload.username.required" padding-left>
+              Username is required
+            </p>
           </ion-text>
 
           <ion-item>
@@ -38,19 +43,24 @@
               @ionChange="payload.password = $event.target.value"
             ></ion-input>
           </ion-item>
-          <ion-text v-if="submitted && $v.payload.password.$error" color="danger">
-            <p v-if="!$v.payload.password.required" padding-left>Password is required</p>
+          <ion-text
+            v-if="submitted && $v.payload.password.$error"
+            color="danger"
+          >
+            <p v-if="!$v.payload.password.required" padding-left>
+              Password is required
+            </p>
           </ion-text>
         </ion-list>
 
         <ion-text v-if="errors" color="danger">
-          <p v-if="errors.status" padding-left>{{ errors.status }}: {{ errors.statusText }}</p>
+          <p v-if="errors.status" padding-left>
+            {{ errors.status }}: {{ errors.statusText }}
+          </p>
           <template v-for="(error_array, error_key) in errors.data">
-            <p
-              v-for="(error, index) in error_array"
-              :key="index"
-              padding-left
-            >{{ error_key }}: {{ error }}</p>
+            <p v-for="(error, index) in error_array" :key="index" padding-left>
+              {{ error_key }}: {{ error }}
+            </p>
           </template>
         </ion-text>
         <div padding>

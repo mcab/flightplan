@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import router from "@/router";
-import { stat } from "fs";
 
 Vue.use(Vuex);
 
@@ -72,7 +71,7 @@ export default new Vuex.Store({
       commit("clearErrors");
     },
     clearToast({ commit }) {
-      commit("clearToast")
+      commit("clearToast");
     },
     setToast({ commit }, payload) {
       commit("displayToast", payload);
