@@ -1,31 +1,37 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import router from "@/router";
+import { stat } from "fs";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    idToken: null,
-    userId: null,
+    token: null,
     user: null,
     error: {
       status: "",
       statusText: "",
       data: ""
+    },
+    toast: {
+      display: null,
+      message: "",
+      duration: null,
+      color: "",
+      showCloseButton: null
     }
   },
   mutations: {
     authUser(state, userData) {
-      state.idToken = userData.token;
-      state.userId = userData.userId;
+      state.token = userData.token;
     },
     storeUser(state, user) {
       state.user = user;
     },
     clearAuthData(state) {
-      state.idToken = null;
-      state.userId = null;
+      state.token = null;
     },
     clearErrors(state) {
       state.error = {
@@ -38,6 +44,22 @@ export default new Vuex.Store({
       state.error.status = payload.status;
       state.error.statusText = payload.statusText;
       state.error.data = payload.data;
+    },
+    displayToast(state, payload) {
+      state.toast.display = payload.display;
+      state.toast.message = payload.message;
+      state.toast.duration = payload.duration;
+      state.toast.color = payload.color;
+      state.toast.showCloseButton = payload.showCloseButton;
+    },
+    clearToast(state) {
+      state.toast = {
+        display: null,
+        message: "",
+        duration: null,
+        color: "",
+        showCloseButton: null
+      };
     }
   },
   actions: {
@@ -49,109 +71,125 @@ export default new Vuex.Store({
     clearErrors({ commit }) {
       commit("clearErrors");
     },
+    clearToast({ commit }) {
+      commit("clearToast")
+    },
+    setToast({ commit }, payload) {
+      commit("displayToast", payload);
+    },
     serverError({ commit }, payload) {
       commit("errors", payload);
     },
-    signup({ commit, dispatch }, payload) {
+    signup({ dispatch }, payload) {
       axios
         .post("/auth/users/create", {
           username: payload.username,
           email: payload.email,
           password: payload.password
         })
-        .then(res => {
-          console.log("response from server:", res);
-          /*
-          commit("authUser", {
-            token: res.data.idToken,
-            userId: res.data.localId
-          });
-          const now = new Date();
-          const expirationDate = new Date(
-            now.getTime() + res.data.expiresIn * 1000
-          );
-          localStorage.setItem("token", res.data.idToken);
-          localStorage.setItem("userId", res.data.localId);
-          localStorage.setItem("expirationDate", expirationDate);
-          dispatch("storeUser", authData);
-          dispatch("setLogoutTimer", res.data.expiresIn);
-          */
+        .then(() => {
+          router.replace({ name: "login" });
         })
         .catch(error => {
           if (error.response) {
             dispatch("serverError", error.response);
           } else if (error.request) {
-            console.log("request made, server did not respond");
-            dispatch("serverError", error.request);
+            dispatch("serverError", {
+              data: {
+                server: [
+                  "An issue has occured while trying to contacting the server."
+                ]
+              }
+            });
           } else {
-            console.log("major error occurred", error);
+            dispatch("serverError", {
+              data: {
+                general: ["A general error has occured."]
+              }
+            });
           }
         });
     },
-    login({ commit, dispatch }, authData) {
-      axios
-        .post("/verifyPassword?key=AIzaSyCXlVPPWknVGhfc60mt7Jkv0Xzrho7_mwc", {
-          email: authData.email,
-          password: authData.password,
-          returnSecureToken: true
+    login({ commit, dispatch }, payload) {
+      return axios
+        .post("/auth/token/login", {
+          username: payload.username,
+          password: payload.password
         })
         .then(res => {
-          console.log(res);
-          const now = new Date();
-          const expirationDate = new Date(
-            now.getTime() + res.data.expiresIn * 1000
-          );
-          localStorage.setItem("token", res.data.idToken);
-          localStorage.setItem("userId", res.data.localId);
-          localStorage.setItem("expirationDate", expirationDate);
-          commit("authUser", {
-            token: res.data.idToken,
-            userId: res.data.localId
+          localStorage.setItem("token", res.data.auth_token);
+          commit("authUser", { token: res.data.auth_token });
+          router.replace({ name: "about" });
+          commit("displayToast", {
+            display: true,
+            message: "You've successfully logged in!",
+            duration: 3000,
+            color: "success",
+            showCloseButton: true
           });
-          dispatch("setLogoutTimer", res.data.expiresIn);
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          if (error.response) {
+            dispatch("serverError", error.response);
+          } else if (error.request) {
+            dispatch("serverError", {
+              data: {
+                server: [
+                  "An issue has occured while trying to contacting the server."
+                ]
+              }
+            });
+          } else {
+            dispatch("serverError", {
+              data: {
+                general: ["A general error has occured."]
+              }
+            });
+          }
+          commit("displayToast", {
+            display: true,
+            message: "An error occured while trying to login.",
+            duration: 3000,
+            color: "danger",
+            showCloseButton: true
+          });
+        });
     },
     tryAutoLogin({ commit }) {
       const token = localStorage.getItem("token");
       if (!token) {
         return;
       }
-      const expirationDate = localStorage.getItem("expirationDate");
-      const now = new Date();
-      if (now >= expirationDate) {
-        return;
-      }
-      const userId = localStorage.getItem("userId");
       commit("authUser", {
-        token: token,
-        userId: userId
+        token: token
       });
     },
     logout({ commit }) {
       commit("clearAuthData");
-      localStorage.removeItem("expirationDate");
       localStorage.removeItem("token");
-      localStorage.removeItem("userId");
       router.replace("/signin");
     },
-    storeUser({ commit, state }, userData) {
-      if (!state.idToken) {
+    storeUser({ state }, userData) {
+      if (!state.token) {
         return;
       }
       axios
-        .post("/users.json" + "?auth=" + state.idToken, userData)
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
+        .post("/users.json" + "?auth=" + state.token, userData)
+        .then(res => {
+          console.log(res); // eslint-disable-line no-console
+        })
+        .catch(error => {
+          console.log(error); // eslint-disable-line no-console
+        });
     },
     fetchUser({ commit, state }) {
-      if (!state.idToken) {
+      if (!state.token) {
         return;
       }
       axios
-        .get("/users.json" + "?auth=" + state.idToken)
+        .get("/users.json" + "?auth=" + state.token)
         .then(res => {
-          console.log(res);
+          console.log(res); // eslint-disable-line no-console
           const data = res.data;
           const users = [];
           for (let key in data) {
@@ -159,21 +197,23 @@ export default new Vuex.Store({
             user.id = key;
             users.push(user);
           }
-          console.log(users);
+          console.log(users); // eslint-disable-line no-console
           commit("storeUser", users[0]);
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error); // eslint-disable-line no-console
+        });
     }
   },
   getters: {
-    user(state) {
-      return state.user;
-    },
     isAuthenticated(state) {
-      return state.idToken !== null;
+      return state.token !== null;
     },
     errors(state) {
       return state.error;
+    },
+    toastInfo(state) {
+      return state.toast;
     }
   }
 });

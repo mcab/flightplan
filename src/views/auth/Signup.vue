@@ -16,15 +16,15 @@
             <ion-label position="stacked" color="primary">Username</ion-label>
             <ion-input
               :value="payload.username"
-              @ionChange="payload.username = $event.target.value"
               name="username"
               type="text"
               spellcheck="false"
               autocapitalize="off"
               required
+              @ionChange="payload.username = $event.target.value"
             ></ion-input>
           </ion-item>
-          <ion-text color="danger" v-if="submitted && $v.payload.username.$error">
+          <ion-text v-if="submitted && $v.payload.username.$error" color="danger">
             <p v-if="!$v.payload.username.required" padding-left>Username is required</p>
           </ion-text>
 
@@ -32,15 +32,15 @@
             <ion-label position="stacked" color="primary">Email</ion-label>
             <ion-input
               :value="payload.email"
-              @ionChange="payload.email = $event.target.value"
               name="email"
               type="email"
               spellcheck="false"
               autocapitalize="off"
               required
+              @ionChange="payload.email = $event.target.value"
             ></ion-input>
           </ion-item>
-          <ion-text color="danger" v-if="submitted && $v.payload.email.$error">
+          <ion-text v-if="submitted && $v.payload.email.$error" color="danger">
             <p v-if="!$v.payload.email.required" padding-left>Email is required</p>
             <p v-if="!$v.payload.email.email" padding-left>Not a valid email</p>
           </ion-text>
@@ -49,13 +49,13 @@
             <ion-label position="stacked" color="primary">Password</ion-label>
             <ion-input
               :value="payload.password"
-              @ionChange="payload.password = $event.target.value"
               name="password"
               type="password"
               required
+              @ionChange="payload.password = $event.target.value"
             ></ion-input>
           </ion-item>
-          <ion-text color="danger" v-if="submitted && $v.payload.password.$error">
+          <ion-text v-if="submitted && $v.payload.password.$error" color="danger">
             <p v-if="!$v.payload.password.required" padding-left>Password is required</p>
             <p
               v-if="!$v.payload.password.minLength"
@@ -67,13 +67,13 @@
             <ion-label position="stacked" color="primary">Confirm Password</ion-label>
             <ion-input
               :value="payload.confirmPassword"
-              @ionChange="payload.confirmPassword = $event.target.value"
               name="confirmPassword"
               type="password"
               required
+              @ionChange="payload.confirmPassword = $event.target.value"
             ></ion-input>
           </ion-item>
-          <ion-text color="danger" v-if="submitted && $v.payload.confirmPassword.$error">
+          <ion-text v-if="submitted && $v.payload.confirmPassword.$error" color="danger">
             <p v-if="!$v.payload.confirmPassword.required" padding-left>Must confirm the password</p>
             <p
               v-if="!$v.payload.confirmPassword.sameAsPassword"
@@ -82,10 +82,14 @@
           </ion-text>
         </ion-list>
 
-        <ion-text color="danger" v-if="errors">
-          <p padding-left>{{ errors.status }}: {{ errors.statusText }}</p>
+        <ion-text v-if="errors" color="danger">
+          <p v-if="errors.status" padding-left>{{ errors.status }}: {{ errors.statusText }}</p>
           <template v-for="(error_array, error_key) in errors.data">
-            <p v-for="(error, index) in error_array" :key="index" padding-left>{{ error_key }}: {{ error }}</p>
+            <p
+              v-for="(error, index) in error_array"
+              :key="index"
+              padding-left
+            >{{ error_key }}: {{ error }}</p>
           </template>
         </ion-text>
         <div padding>
@@ -98,9 +102,11 @@
 
 <script>
 import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import { sharedMixin } from "@/mixins/shared";
 
 export default {
+  mixins: [sharedMixin],
   data() {
     return {
       payload: {
@@ -135,7 +141,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["handleErrors"]),
     onSubmit() {
       this.submitted = true;
 
@@ -144,7 +149,14 @@ export default {
         return;
       }
       this.$store.dispatch("clearErrors");
-      this.$store.dispatch("signup", this.payload);
+      this.$store.dispatch("signup", this.payload).then(() => {
+        this.toast({
+          message: "You've successfully registered!",
+          duration: 5000,
+          color: "success",
+          showCloseButton: true
+        });
+      });
     }
   }
 };
