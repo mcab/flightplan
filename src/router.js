@@ -7,7 +7,7 @@ import store from "@/store";
 Vue.use(IonicVueRouter);
 
 const privateRoute = function(to, from, next) {
-  if (store.state.idToken) {
+  if (store.state.token) {
     next();
   } else {
     next({ name: "login" });

@@ -7,7 +7,7 @@ import router from "./router";
 import store from "./store";
 import "@ionic/core/css/core.css";
 import "@ionic/core/css/ionic.bundle.css";
-import "@/registerServiceWorker";
+import "./registerServiceWorker";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "development"
