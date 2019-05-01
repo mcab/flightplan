@@ -136,7 +136,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["errors"])
+    ...mapGetters(["errors", "toastInfo"])
   },
   validations: {
     payload: {
@@ -157,6 +157,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$store.dispatch("clearErrors");
+  },
   methods: {
     onSubmit() {
       this.submitted = true;
@@ -166,13 +169,9 @@ export default {
         return;
       }
       this.$store.dispatch("clearErrors");
-      this.$store.dispatch("signup", this.payload).then(() => {
-        this.toast({
-          message: "You've successfully registered!",
-          duration: 5000,
-          color: "success",
-          showCloseButton: true
-        });
+      this.$store.dispatch("signup", this.payload).finally(() => {
+        this.toast(this.toastInfo);
+        this.$store.dispatch("clearToast");
       });
     }
   }

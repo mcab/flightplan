@@ -73,14 +73,11 @@ export default new Vuex.Store({
     clearToast({ commit }) {
       commit("clearToast");
     },
-    setToast({ commit }, payload) {
-      commit("displayToast", payload);
-    },
     serverError({ commit }, payload) {
       commit("errors", payload);
     },
-    signup({ dispatch }, payload) {
-      axios
+    signup({ commit, dispatch }, payload) {
+      return axios
         .post("/auth/users/create", {
           username: payload.username,
           email: payload.email,
@@ -88,6 +85,13 @@ export default new Vuex.Store({
         })
         .then(() => {
           router.replace({ name: "login" });
+          commit("displayToast", {
+            display: true,
+            message: "You've successfully signed up!",
+            duration: 3000,
+            color: "success",
+            showCloseButton: true
+          });
         })
         .catch(error => {
           if (error.response) {
@@ -107,6 +111,13 @@ export default new Vuex.Store({
               }
             });
           }
+          commit("displayToast", {
+            display: true,
+            message: "An error occured while trying to register.",
+            duration: 3000,
+            color: "danger",
+            showCloseButton: true
+          });
         });
     },
     login({ commit, dispatch }, payload) {
