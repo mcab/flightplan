@@ -81,7 +81,7 @@ export default new Vuex.Store({
           password: payload.password
         };
         await axios.post("/auth/users/create", data);
-        router.replace({ name: "login" });
+        router.push({ name: "login" });
         commit("displayToast", {
           display: true,
           message: "You've successfully signed up!",
@@ -104,7 +104,7 @@ export default new Vuex.Store({
         let response = await axios.post("/auth/token/login", data);
         localStorage.setItem("token", response.data.auth_token);
         commit("authUser", { token: response.data.auth_token });
-        router.replace({ name: "account" });
+        router.push({ name: "account" });
         commit("displayToast", {
           display: true,
           message: "You've successfully logged in!",
@@ -145,7 +145,7 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit("clearAuthData");
       localStorage.removeItem("token");
-      router.replace({ name: "home" });
+      router.push({ name: "home" });
       commit("displayToast", {
         display: true,
         message: "You've been logged out.",
