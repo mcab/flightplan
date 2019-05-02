@@ -49,7 +49,7 @@ export default new Vuex.Store({
       state.toast = {
         display: null,
         message: "",
-        duration: 3000,
+        duration: 6000,
         color: "",
         showCloseButton: true
       };
@@ -65,86 +65,50 @@ export default new Vuex.Store({
     serverError({ commit }, payload) {
       commit("errors", payload);
     },
-    signup({ commit, dispatch }, payload) {
-      return axios
-        .post("/auth/users/create", {
+    async signup({ commit }, payload) {
+      try {
+        let data = {
           username: payload.username,
           email: payload.email,
           password: payload.password
-        })
-        .then(() => {
-          router.replace({ name: "login" });
-          commit("displayToast", {
-            display: true,
-            message: "You've successfully signed up!",
-            color: "success"
-          });
-        })
-        .catch(error => {
-          if (error.response) {
-            dispatch("serverError", error.response);
-          } else if (error.request) {
-            dispatch("serverError", {
-              data: {
-                server: [
-                  "An issue has occured while trying to contacting the server."
-                ]
-              }
-            });
-          } else {
-            dispatch("serverError", {
-              data: {
-                general: ["A general error has occured."]
-              }
-            });
-          }
-          commit("displayToast", {
-            display: true,
-            message: "An error occured while trying to register.",
-            color: "danger"
-          });
+        };
+        await axios.post("/auth/users/create", data);
+        router.replace({ name: "login" });
+        commit("displayToast", {
+          display: true,
+          message: "You've successfully signed up!",
+          color: "success"
         });
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An error occured while trying to register.",
+          color: "danger"
+        });
+      }
     },
-    login({ commit, dispatch }, payload) {
-      return axios
-        .post("/auth/token/login", {
+    async login({ commit }, payload) {
+      try {
+        let data = {
           username: payload.username,
           password: payload.password
-        })
-        .then(res => {
-          localStorage.setItem("token", res.data.auth_token);
-          commit("authUser", { token: res.data.auth_token });
-          router.replace({ name: "about" });
-          commit("displayToast", {
-            display: true,
-            message: "You've successfully logged in!",
-            color: "success"
-          });
-        })
-        .catch(error => {
-          if (error.response) {
-            dispatch("serverError", error.response);
-          } else if (error.request) {
-            dispatch("serverError", {
-              data: {
-                server: [
-                  "An issue has occured while trying to contacting the server."
-                ]
-              }
-            });
-          } else {
-            dispatch("serverError", {
-              data: {
-                general: ["A general error has occured."]
-              }
-            });
-          }
-          commit("displayToast", {
-            display: true,
-            message: "An error occured while trying to login.",
-            color: "danger"
-          });
+        };
+        let response = await axios.post("/auth/token/login", data);
+        localStorage.setItem("token", response.data.auth_token);
+        commit("authUser", { token: response.data.auth_token });
+        router.replace({ name: "about" });
+        commit("displayToast", {
+          display: true,
+          message: "You've successfully logged in!",
+          color: "success"
         });
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An error occured while trying to login.",
+          color: "danger"
+        });
+      }
     },
     tryAutoLogin({ commit }) {
       const token = localStorage.getItem("token");

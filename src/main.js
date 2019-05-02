@@ -14,6 +14,30 @@ axios.defaults.baseURL =
     ? process.env.VUE_APP_API_DEV_BASE_URL
     : process.env.VUE_APP_API_PROD_BASE_URL;
 
+axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    store.dispatch("serverError", error.response);
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.request.use(
+  request => {
+    return request;
+  },
+  error => {
+    store.dispatch("serverError", {
+      data: {
+        server: ["An issue has occured while trying to contacting the server."]
+      }
+    });
+    return Promise.reject(error);
+  }
+);
+
 Vue.use(Ionic);
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
