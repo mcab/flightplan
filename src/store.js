@@ -143,41 +143,6 @@ export default new Vuex.Store({
         message: "You've been logged out.",
         color: "success"
       });
-    },
-    storeUser({ state }, userData) {
-      if (!state.token) {
-        return;
-      }
-      axios
-        .post("/users.json" + "?auth=" + state.token, userData)
-        .then(res => {
-          console.log(res); // eslint-disable-line no-console
-        })
-        .catch(error => {
-          console.log(error); // eslint-disable-line no-console
-        });
-    },
-    fetchUser({ commit, state }) {
-      if (!state.token) {
-        return;
-      }
-      axios
-        .get("/users.json" + "?auth=" + state.token)
-        .then(res => {
-          console.log(res); // eslint-disable-line no-console
-          const data = res.data;
-          const users = [];
-          for (let key in data) {
-            const user = data[key];
-            user.id = key;
-            users.push(user);
-          }
-          console.log(users); // eslint-disable-line no-console
-          commit("storeUser", users[0]);
-        })
-        .catch(error => {
-          console.log(error); // eslint-disable-line no-console
-        });
     }
   },
   getters: {
