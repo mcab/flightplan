@@ -17,8 +17,8 @@ export default new Vuex.Store({
     toast: {
       display: null,
       message: "",
-      duration: 3000,
-      color: "",
+      duration: 5000,
+      color: "dark",
       showCloseButton: true
     },
     houses: []
@@ -50,8 +50,8 @@ export default new Vuex.Store({
       state.toast = {
         display: null,
         message: "",
-        duration: 6000,
-        color: "",
+        duration: 5000,
+        color: "dark",
         showCloseButton: true
       };
     },
@@ -84,8 +84,7 @@ export default new Vuex.Store({
         router.push({ name: "login" });
         commit("displayToast", {
           display: true,
-          message: "You've successfully signed up!",
-          color: "success"
+          message: "You've successfully signed up!"
         });
       } catch (error) {
         commit("displayToast", {
@@ -107,8 +106,7 @@ export default new Vuex.Store({
         router.push({ name: "account" });
         commit("displayToast", {
           display: true,
-          message: "You've successfully logged in!",
-          color: "success"
+          message: "You've successfully logged in!"
         });
       } catch (error) {
         commit("displayToast", {
@@ -148,8 +146,7 @@ export default new Vuex.Store({
       router.push({ name: "home" });
       commit("displayToast", {
         display: true,
-        message: "You've been logged out.",
-        color: "success"
+        message: "You've been logged out."
       });
     },
     async getHouseData({ commit }) {
@@ -173,8 +170,7 @@ export default new Vuex.Store({
       } catch (error) {
         commit("displayToast", {
           display: true,
-          message: "An unexpected error occurred.",
-          color: "danger"
+          message: "An unexpected error occurred."
         });
       }
       return true;
@@ -189,8 +185,7 @@ export default new Vuex.Store({
           commit("updateHouses", response.data);
           commit("displayToast", {
             display: true,
-            message: "The house was successfully created!",
-            color: "success"
+            message: "The house was successfully created!"
           });
           router.push({ name: "house-list" });
         }

@@ -23,31 +23,31 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response.status >= 500 && error.response.status <= 599) {
-      store.dispatch("serverError", {
-        data: {
-          server: ["An issue occurred server side."]
-        }
+      store.commit("displayToast", {
+        display: true,
+        message: "The server reported an issue with the request.",
+        color: "warning"
       });
     } else if (error.response.status === 401) {
       store.dispatch("logout");
       store.commit("displayToast", {
         display: true,
-        message: "You've been automatically logged out.",
+        message: "Incorrect token; you've been logged out.",
         color: "warning"
       });
     } else if (error.response.status === 404) {
-      store.dispatch("serverError", {
-        data: {
-          server: ["The server could not find the page specified."]
-        }
+      store.commit("displayToast", {
+        display: true,
+        message: "The page could not be found.",
+        color: "warning"
       });
     } else if (error.response) {
       store.dispatch("serverError", error.response);
     } else {
-      store.dispatch("serverError", {
-        data: {
-          server: ["A general issue occurred."]
-        }
+      store.commit("displayToast", {
+        display: true,
+        message: "A general error occurred.",
+        color: "warning"
       });
     }
     return Promise.reject(error);
