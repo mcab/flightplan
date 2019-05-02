@@ -5,9 +5,7 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title
-          >Physical Features</ion-title
-        >
+        <ion-title>Physical Features</ion-title>
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>

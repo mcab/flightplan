@@ -21,7 +21,7 @@ export default new Vuex.Store({
       color: "",
       showCloseButton: true
     },
-    houses: {}
+    houses: []
   },
   mutations: {
     authUser(state, userData) {
@@ -56,7 +56,11 @@ export default new Vuex.Store({
       };
     },
     updateHouses(state, payload) {
-      state.houses = payload.count > 0 ? payload.results : {};
+      if (payload.count) {
+        state.houses = payload.count > 0 ? payload.results : {};
+      } else {
+        state.houses.unshift(payload);
+      }
     }
   },
   actions: {
@@ -148,22 +152,42 @@ export default new Vuex.Store({
         color: "success"
       });
     },
-    async getHouseData({ commit, dispatch }) {
+    async getHouseData({ commit }) {
       try {
-        let response = await axios.get("/api/v1/houses/");
-        if (response.status !== 200) {
-          dispatch("logout");
+        let response = await axios.get("/api/v1/houses");
+        if (response.status === 200) {
+          commit("updateHouses", response.data);
         }
-        commit("updateHouses", response.data);
       } catch (error) {
-        if (error.response.status === 401) {
+        commit("displayToast", {
+          display: true,
+          message: "An unexpected error occurred.",
+          color: "danger"
+        });
+      }
+      return true;
+    },
+    async createHouse({ commit }, payload) {
+      try {
+        if (payload.property_type !== "OT") {
+          delete payload.other_property_type;
+        }
+        let response = await axios.post("/api/v1/houses", payload);
+        if (response.status === 201) {
+          commit("updateHouses", response.data);
           commit("displayToast", {
             display: true,
-            message: "You've been automatically logged out.",
-            color: "warning"
+            message: "The house was successfully created!",
+            color: "success"
           });
+          router.push({ name: "house-list" });
         }
-        dispatch("logout");
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An error occured while trying to create a house.",
+          color: "danger"
+        });
       }
     }
   },

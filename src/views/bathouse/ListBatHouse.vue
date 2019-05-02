@@ -9,6 +9,16 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-refresher slot="fixed" @ionRefresh="getData($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+      <ion-button
+        expand="full"
+        color="tertiary"
+        style="margin: 0"
+        @click="goTo({ location: 'new-house' })"
+        >Add New Bat House</ion-button
+      >
       <ion-card v-for="house in houses" :key="house.id">
         <ion-card-header>
           <ion-card-title>Bat House #{{ house.id }}</ion-card-title>
@@ -102,9 +112,18 @@ export default {
     ...mapGetters(["errors", "toastInfo", "houses"])
   },
   mounted() {
-    this.$store.dispatch("getHouseData");
+    if (this.houses.length === 0) {
+      this.getData();
+    }
   },
   methods: {
+    getData(event) {
+      this.$store.dispatch("getHouseData").then(() => {
+        if (event) {
+          event.target.complete();
+        }
+      });
+    },
     goTo({ location, id }) {
       switch (location) {
         case "environmental":
@@ -115,6 +134,9 @@ export default {
           break;
         case "observation":
           this.$router.push({ name: "house-observation-list", params: { id } });
+          break;
+        case "new-house":
+          this.$router.push({ name: "house-create" });
           break;
         default:
           break;

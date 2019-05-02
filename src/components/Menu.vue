@@ -66,8 +66,10 @@
 </template>
 
 <script>
+import { sharedMixin } from "@/mixins/shared";
 import { mapGetters } from "vuex";
 export default {
+  mixins: [sharedMixin],
   data() {
     return {
       appPages: [
