@@ -12,6 +12,11 @@
       <div padding class="about-info">
         <h4>Home Page</h4>
         <p>This is our bat house app!</p>
+        <br>
+        <h2>Why become a citizen bat scientist?</h2>
+        
+        <ion-button @click="goToAbout" full>Learn More!</ion-button>
+        
       </div>
     </ion-content>
   </div>
