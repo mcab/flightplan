@@ -17,9 +17,9 @@ export default new Vuex.Store({
     toast: {
       display: null,
       message: "",
-      duration: null,
+      duration: 3000,
       color: "",
-      showCloseButton: null
+      showCloseButton: true
     }
   },
   mutations: {
@@ -40,33 +40,22 @@ export default new Vuex.Store({
       };
     },
     errors(state, payload) {
-      state.error.status = payload.status;
-      state.error.statusText = payload.statusText;
-      state.error.data = payload.data;
+      state.error = { ...state.error, ...payload };
     },
     displayToast(state, payload) {
-      state.toast.display = payload.display;
-      state.toast.message = payload.message;
-      state.toast.duration = payload.duration;
-      state.toast.color = payload.color;
-      state.toast.showCloseButton = payload.showCloseButton;
+      state.toast = { ...state.toast, ...payload };
     },
     clearToast(state) {
       state.toast = {
         display: null,
         message: "",
-        duration: null,
+        duration: 3000,
         color: "",
-        showCloseButton: null
+        showCloseButton: true
       };
     }
   },
   actions: {
-    setLogoutTimer({ commit }, expirationTime) {
-      setTimeout(() => {
-        commit("clearAuthData");
-      }, expirationTime * 1000);
-    },
     clearErrors({ commit }) {
       commit("clearErrors");
     },
@@ -88,9 +77,7 @@ export default new Vuex.Store({
           commit("displayToast", {
             display: true,
             message: "You've successfully signed up!",
-            duration: 3000,
-            color: "success",
-            showCloseButton: true
+            color: "success"
           });
         })
         .catch(error => {
@@ -114,9 +101,7 @@ export default new Vuex.Store({
           commit("displayToast", {
             display: true,
             message: "An error occured while trying to register.",
-            duration: 3000,
-            color: "danger",
-            showCloseButton: true
+            color: "danger"
           });
         });
     },
@@ -133,9 +118,7 @@ export default new Vuex.Store({
           commit("displayToast", {
             display: true,
             message: "You've successfully logged in!",
-            duration: 3000,
-            color: "success",
-            showCloseButton: true
+            color: "success"
           });
         })
         .catch(error => {
@@ -159,9 +142,7 @@ export default new Vuex.Store({
           commit("displayToast", {
             display: true,
             message: "An error occured while trying to login.",
-            duration: 3000,
-            color: "danger",
-            showCloseButton: true
+            color: "danger"
           });
         });
     },
