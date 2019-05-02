@@ -154,10 +154,22 @@ export default new Vuex.Store({
     },
     async getHouseData({ commit }) {
       try {
-        let response = await axios.get("/api/v1/houses");
-        if (response.status === 200) {
-          commit("updateHouses", response.data);
-        }
+        // TODO: Paginate the houses, instead of retrieving all of them.
+        let page = 1;
+        let houses = {};
+        let results = [];
+        let next = "first";
+        do {
+          let response = await axios.get(`/api/v1/houses?page=${page}`);
+          if (response.status === 200) {
+            results = results.concat(response.data.results);
+          }
+          next = response.data.next;
+          page++;
+        } while (next);
+        houses.count = Object.keys(results).length;
+        houses.results = results.reverse();
+        commit("updateHouses", houses);
       } catch (error) {
         commit("displayToast", {
           display: true,
