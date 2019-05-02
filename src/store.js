@@ -20,7 +20,8 @@ export default new Vuex.Store({
       duration: 3000,
       color: "",
       showCloseButton: true
-    }
+    },
+    houses: []
   },
   mutations: {
     authUser(state, userData) {
@@ -53,6 +54,13 @@ export default new Vuex.Store({
         color: "",
         showCloseButton: true
       };
+    },
+    updateHouses(state, payload) {
+      if (payload.count) {
+        state.houses = payload.count > 0 ? payload.results : {};
+      } else {
+        state.houses.unshift(payload);
+      }
     }
   },
   actions: {
@@ -144,40 +152,43 @@ export default new Vuex.Store({
         color: "success"
       });
     },
-    storeUser({ state }, userData) {
-      if (!state.token) {
-        return;
-      }
-      axios
-        .post("/users.json" + "?auth=" + state.token, userData)
-        .then(res => {
-          console.log(res); // eslint-disable-line no-console
-        })
-        .catch(error => {
-          console.log(error); // eslint-disable-line no-console
+    async getHouseData({ commit }) {
+      try {
+        let response = await axios.get("/api/v1/houses");
+        if (response.status === 200) {
+          commit("updateHouses", response.data);
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An unexpected error occurred.",
+          color: "danger"
         });
+      }
+      return true;
     },
-    fetchUser({ commit, state }) {
-      if (!state.token) {
-        return;
-      }
-      axios
-        .get("/users.json" + "?auth=" + state.token)
-        .then(res => {
-          console.log(res); // eslint-disable-line no-console
-          const data = res.data;
-          const users = [];
-          for (let key in data) {
-            const user = data[key];
-            user.id = key;
-            users.push(user);
-          }
-          console.log(users); // eslint-disable-line no-console
-          commit("storeUser", users[0]);
-        })
-        .catch(error => {
-          console.log(error); // eslint-disable-line no-console
+    async createHouse({ commit }, payload) {
+      try {
+        if (payload.property_type !== "OT") {
+          delete payload.other_property_type;
+        }
+        let response = await axios.post("/api/v1/houses", payload);
+        if (response.status === 201) {
+          commit("updateHouses", response.data);
+          commit("displayToast", {
+            display: true,
+            message: "The house was successfully created!",
+            color: "success"
+          });
+          router.push({ name: "house-list" });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An error occured while trying to create a house.",
+          color: "danger"
         });
+      }
     }
   },
   getters: {
@@ -189,6 +200,9 @@ export default new Vuex.Store({
     },
     toastInfo(state) {
       return state.toast;
+    },
+    houses(state) {
+      return state.houses;
     }
   }
 });

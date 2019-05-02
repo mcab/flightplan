@@ -98,7 +98,6 @@
             </p>
           </ion-text>
         </ion-list>
-
         <ion-text v-if="errors" color="danger">
           <p v-if="errors.status" padding-left>
             {{ errors.status }}: {{ errors.statusText }}

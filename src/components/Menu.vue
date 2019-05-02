@@ -15,6 +15,18 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
+
+      <ion-list v-if="isAuthenticated">
+        <ion-list-header>Bat Houses</ion-list-header>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item button @click="navigate({ name: 'house-list' })">
+            <ion-icon slot="start" name="book"></ion-icon>
+            <ion-label>Bat Houses</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
       <ion-list v-if="isAuthenticated">
         <ion-list-header>Account</ion-list-header>
 
@@ -54,8 +66,10 @@
 </template>
 
 <script>
+import { sharedMixin } from "@/mixins/shared";
 import { mapGetters } from "vuex";
 export default {
+  mixins: [sharedMixin],
   data() {
     return {
       appPages: [
