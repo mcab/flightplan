@@ -10,8 +10,23 @@
     </ion-header>
     <ion-content>
       <div padding class="about-info">
-        <p>Account information goes here</p>
+        <p v-if="isAuthenticated">You're logged in!</p>
+        <p v-if="$store.state.token">{{ $store.state.token }}</p>
       </div>
     </ion-content>
   </div>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters(["isAuthenticated", "toastInfo"])
+  },
+  methods: {
+    navigate(url) {
+      this.$router.push(url);
+    },
+  }
+};
+</script>
