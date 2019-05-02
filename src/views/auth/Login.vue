@@ -113,8 +113,10 @@ export default {
       }
       this.$store.dispatch("clearErrors");
       this.$store.dispatch("login", this.payload).finally(() => {
-        this.toast(this.toastInfo);
-        this.$store.dispatch("clearToast");
+        if (this.toastInfo.message) {
+          this.toast(this.toastInfo);
+          this.$store.dispatch("clearToast");
+        }
       });
     }
   }

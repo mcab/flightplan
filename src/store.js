@@ -96,7 +96,7 @@ export default new Vuex.Store({
         let response = await axios.post("/auth/token/login", data);
         localStorage.setItem("token", response.data.auth_token);
         commit("authUser", { token: response.data.auth_token });
-        router.replace({ name: "about" });
+        router.replace({ name: "account" });
         commit("displayToast", {
           display: true,
           message: "You've successfully logged in!",
@@ -110,7 +110,7 @@ export default new Vuex.Store({
         });
       }
     },
-    tryAutoLogin({ commit }) {
+    async autoLogin({ commit, dispatch }) {
       const token = localStorage.getItem("token");
       if (!token) {
         return;
@@ -118,11 +118,31 @@ export default new Vuex.Store({
       commit("authUser", {
         token: token
       });
+      try {
+        let response = await axios.get("/auth/users/me");
+        if (response.status !== 200) {
+          dispatch("logout");
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          commit("displayToast", {
+            display: true,
+            message: "You've been automatically logged out.",
+            color: "warning"
+          });
+        }
+        dispatch("logout");
+      }
     },
     logout({ commit }) {
       commit("clearAuthData");
       localStorage.removeItem("token");
-      router.replace("/signin");
+      router.replace({ name: "home" });
+      commit("displayToast", {
+        display: true,
+        message: "You've been logged out.",
+        color: "success"
+      });
     },
     storeUser({ state }, userData) {
       if (!state.token) {

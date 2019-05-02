@@ -170,8 +170,10 @@ export default {
       }
       this.$store.dispatch("clearErrors");
       this.$store.dispatch("signup", this.payload).finally(() => {
-        this.toast(this.toastInfo);
-        this.$store.dispatch("clearToast");
+        if (this.toastInfo.message) {
+          this.toast(this.toastInfo);
+          this.$store.dispatch("clearToast");
+        }
       });
     }
   }
