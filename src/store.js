@@ -20,7 +20,8 @@ export default new Vuex.Store({
       duration: 3000,
       color: "",
       showCloseButton: true
-    }
+    },
+    houses: {}
   },
   mutations: {
     authUser(state, userData) {
@@ -53,6 +54,9 @@ export default new Vuex.Store({
         color: "",
         showCloseButton: true
       };
+    },
+    updateHouses(state, payload) {
+      state.houses = payload.count > 0 ? payload.results : {};
     }
   },
   actions: {
@@ -143,6 +147,24 @@ export default new Vuex.Store({
         message: "You've been logged out.",
         color: "success"
       });
+    },
+    async getHouseData({ commit, dispatch }) {
+      try {
+        let response = await axios.get("/api/v1/houses/");
+        if (response.status !== 200) {
+          dispatch("logout");
+        }
+        commit("updateHouses", response.data);
+      } catch (error) {
+        if (error.response.status === 401) {
+          commit("displayToast", {
+            display: true,
+            message: "You've been automatically logged out.",
+            color: "warning"
+          });
+        }
+        dispatch("logout");
+      }
     }
   },
   getters: {
@@ -154,6 +176,9 @@ export default new Vuex.Store({
     },
     toastInfo(state) {
       return state.toast;
+    },
+    houses(state) {
+      return state.houses;
     }
   }
 });

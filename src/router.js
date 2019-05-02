@@ -49,7 +49,7 @@ export default new IonicVueRouter({
     },
     {
       path: "/houses",
-      name: "houses",
+      name: "house-list",
       component: () =>
         import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListBatHouse.vue")
     },
@@ -60,16 +60,34 @@ export default new IonicVueRouter({
         import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateBatHouse.vue")
     },
     {
+      path: "/houses/:id/environment",
+      name: "house-environment-list",
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListEnvironmentFeatures.vue")
+    },
+    {
       path: "/houses/:id/environment/create",
       name: "house-environment-create",
       component: () =>
         import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateEnvironmentFeatures.vue")
     },
     {
+      path: "/houses/:id/physical",
+      name: "house-physical-list",
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListPhysicalFeatures.vue")
+    },
+    {
       path: "/houses/:id/physical/create",
       name: "house-physical-create",
       component: () =>
         import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreatePhysicalFeatures.vue")
+    },
+    {
+      path: "/houses/:id/observations",
+      name: "house-observation-list",
+      component: () =>
+        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListObservation.vue")
     },
     {
       path: "/houses/:id/observations/create",

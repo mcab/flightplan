@@ -20,7 +20,7 @@
         <ion-list-header>Bat Houses</ion-list-header>
 
         <ion-menu-toggle auto-hide="false">
-          <ion-item button @click="navigate({ name: 'houses' })">
+          <ion-item button @click="navigate({ name: 'house-list' })">
             <ion-icon slot="start" name="book"></ion-icon>
             <ion-label>Bat Houses</ion-label>
           </ion-item>

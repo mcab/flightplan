@@ -26,7 +26,7 @@ export default {
   methods: {
     navigate(url) {
       this.$router.push(url);
-    },
+    }
   }
 };
 </script>
