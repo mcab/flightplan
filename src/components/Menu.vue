@@ -15,6 +15,18 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
+
+      <ion-list v-if="isAuthenticated">
+        <ion-list-header>Bat Houses</ion-list-header>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item button @click="navigate({ name: 'houses' })">
+            <ion-icon slot="start" name="book"></ion-icon>
+            <ion-label>Bat Houses</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
       <ion-list v-if="isAuthenticated">
         <ion-list-header>Account</ion-list-header>
 
