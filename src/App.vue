@@ -13,6 +13,9 @@ import Menu from "./components/Menu.vue";
 export default {
   components: {
     Menu
+  },
+  created() {
+    this.$store.dispatch("tryAutoLogin");
   }
 };
 </script>

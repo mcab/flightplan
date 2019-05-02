@@ -7,10 +7,10 @@ import store from "@/store";
 Vue.use(IonicVueRouter);
 
 const privateRoute = function(to, from, next) {
-  if (!store.state.user || !store.state.user.isAuthenticated) {
-    next({ name: "home" });
-  } else {
+  if (store.state.token) {
     next();
+  } else {
+    next({ name: "login" });
   }
 };
 
@@ -39,13 +39,13 @@ export default new IonicVueRouter({
       path: "/login",
       name: "login",
       component: () =>
-        import(/* webpackChunkName: "auth" */ "@/views/Login.vue")
+        import(/* webpackChunkName: "auth" */ "@/views/auth/Login.vue")
     },
     {
       path: "/signup",
       name: "signup",
       component: () =>
-        import(/* webpackChunkName: "auth" */ "@/views/Signup.vue")
+        import(/* webpackChunkName: "auth" */ "@/views/auth/Signup.vue")
     },
     {
       path: "/houses",
