@@ -83,16 +83,6 @@ export default {
           title: "About",
           url: "/about",
           icon: "information-circle"
-        },
-        {
-          title: "List Houses",
-          url: "/houses",
-          icon: "list"
-        },
-        {
-          title: "Create Bat House",
-          url: "/houses/create",
-          icon: "add-circle-outline"
         }
       ]
     };

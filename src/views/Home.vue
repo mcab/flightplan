@@ -8,16 +8,13 @@
         <ion-title>Home</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
-      <div padding class="about-info">
-        <h4>Home Page</h4>
-        <p>This is our bat house app!</p>
-        <br>
-        <h2>Why become a citizen bat scientist?</h2>
-        
-        <ion-button @click="goToAbout" full>Learn More!</ion-button>
-        
-      </div>
+    <ion-content padding>
+      <h2>Home Page</h2>
+      <p>This is Team's 36 Citizen Science Bat House Monitoring Application!</p>
+      <p>Many thanks for taking the time to look and view this project.</p>
+      <p>The main idea of this project is data aggregation: if we can encourage users to contribute data, this helps immensely for endangered bat species across the state.</p>
+      <p>With all the data being stored in a PostgreSQL database, it's a matter of extracting that data, and correlating it with other factors. That is left as an (extensive) future project.</p>
+      <p>We know there's plenty to think about in this world, but not having to deal with insects and pests outside of your home is always an appreciated thought.</p>
     </ion-content>
   </div>
 </template>
