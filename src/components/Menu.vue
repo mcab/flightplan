@@ -15,7 +15,19 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
-      <ion-list v-if="loggedIn">
+
+      <ion-list v-if="isAuthenticated">
+        <ion-list-header>Bat Houses</ion-list-header>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item button @click="navigate({ name: 'house-list' })">
+            <ion-icon slot="start" name="book"></ion-icon>
+            <ion-label>Bat Houses</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-list v-if="isAuthenticated">
         <ion-list-header>Account</ion-list-header>
 
         <ion-menu-toggle auto-hide="false">
@@ -33,7 +45,7 @@
         </ion-menu-toggle>
       </ion-list>
 
-      <ion-list v-if="!loggedIn">
+      <ion-list v-if="!isAuthenticated">
         <ion-list-header>Account</ion-list-header>
 
         <ion-menu-toggle auto-hide="false">
@@ -54,7 +66,10 @@
 </template>
 
 <script>
+import { sharedMixin } from "@/mixins/shared";
+import { mapGetters } from "vuex";
 export default {
+  mixins: [sharedMixin],
   data() {
     return {
       appPages: [
@@ -83,15 +98,19 @@ export default {
     };
   },
   computed: {
-    loggedIn() {
-      return !this.$store.state.user
-        ? false
-        : this.$store.state.user.isAuthenticated;
-    }
+    ...mapGetters(["isAuthenticated", "toastInfo"])
   },
   methods: {
     navigate(url) {
       this.$router.push(url);
+    },
+    logout() {
+      this.$store.dispatch("logout", this.payload).finally(() => {
+        if (this.toastInfo.message) {
+          this.toast(this.toastInfo);
+          this.$store.dispatch("clearToast");
+        }
+      });
     }
   }
 };
