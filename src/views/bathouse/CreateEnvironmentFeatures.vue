@@ -5,13 +5,30 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>
-          Add Environment Survey for Bat House ID
-          {{ $route.params.id }}
-        </ion-title>
+        <ion-title>Environment Survey</ion-title>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content padding>
+      <ion-card v-if="$v.$error">
+        <ion-card-header
+          >There were errors with your submission!</ion-card-header
+        >
+        <ion-card-content>
+          <ion-list v-if="$v.$error">
+            <base-multi-error-extractor
+              :validator="$v.payload"
+              :attributes="validate.attributes"
+            >
+              <p slot-scope="{ errorMessage }">
+                <ion-text color="danger">{{ errorMessage }}</ion-text>
+              </p>
+            </base-multi-error-extractor>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
       <ion-item-group>
         <ion-item-divider>
           <ion-label>Prelude</ion-label>
@@ -213,7 +230,7 @@
             >
             <ion-select
               multiple="true"
-              @ionChange="payload.noise_disturbances = $event.target.value"
+              @ionChange="payload.noise_disturbance = $event.target.value"
             >
               <ion-select-option
                 v-for="(label, value) in choices.noiseDisturbances"
@@ -223,14 +240,12 @@
               >
             </ion-select>
           </ion-item>
-          <ion-item v-if="payload.noise_disturbances.includes('OT')">
+          <ion-item v-if="payload.noise_disturbance.includes('OT')">
             <ion-label position="stacked">Other noise disturbances</ion-label>
             <ion-input
               type="text"
-              :value="payload.other_noise_disturbances"
-              @ionChange="
-                payload.other_noise_disturbances = $event.target.value
-              "
+              :value="payload.other_noise_disturbance"
+              @ionChange="payload.other_noise_disturbance = $event.target.value"
             ></ion-input>
           </ion-item>
         </ion-item-group>
@@ -315,7 +330,7 @@
             >
             <ion-select
               multiple="false"
-              @ionChange="payload.nearest_water_resource = $event.target.value"
+              @ionChange="payload.nearest_water_resources = $event.target.value"
             >
               <ion-select-option
                 v-for="(label, value) in choices.nearestWaterResource"
@@ -326,13 +341,13 @@
               >
             </ion-select>
           </ion-item>
-          <ion-item v-if="payload.nearest_water_resource.includes('OT')">
+          <ion-item v-if="payload.nearest_water_resources.includes('OT')">
             <ion-label position="stacked">Other water resource</ion-label>
             <ion-input
               type="text"
-              :value="payload.other_nearest_water_resource"
+              :value="payload.other_nearest_water_resources"
               @ionChange="
-                payload.other_nearest_water_resource = $event.target.value
+                payload.other_nearest_water_resources = $event.target.value
               "
             ></ion-input>
           </ion-item>
@@ -407,7 +422,17 @@
 </template>
 
 <script>
+import { required, requiredIf, numeric } from "vuelidate/lib/validators";
+import { mapGetters } from "vuex";
+import { sharedMixin } from "@/mixins/shared";
+import { templates } from "vuelidate-error-extractor";
+
 export default {
+  components: {
+    baseMultiErrorExtractor:
+      templates.multiErrorExtractor.baseMultiErrorExtractor
+  },
+  mixins: [sharedMixin],
   data() {
     return {
       doneThisYear: "",
@@ -511,23 +536,131 @@ export default {
         tree_type: 0,
         day_noise: "",
         night_noise: "",
-        noise_disturbances: [],
-        other_noise_disturbances: "",
+        noise_disturbance: [],
+        other_noise_disturbance: "",
         night_light_pollution_amount: "",
         night_light_pollution_consistency: "",
-        nearest_water_resource: "",
-        other_nearest_water_resource: "",
+        nearest_water_resources: "",
+        other_nearest_water_resources: "",
         water_resource_distance: 0,
         water_resource_units: "",
         morning_sunlight: 0,
         afternoon_sunlight: 0,
         other_features: ""
+      },
+      validate: {
+        localMessages: {
+          required: "The {attribute} field must be filled in!"
+        },
+        attributes: {
+          surveyed: "Survey Date",
+          habitat_type: "Habitat type",
+          other_habitat_type: "Other habitat type",
+          habitat_degradation: "Habitat degradation",
+          other_habitat_degradation: "Other habitat degradation",
+          man_made_structure: "Man-made structure",
+          other_man_made_structure: "Other man-made structure",
+          nearby_geography: "Nearby geography",
+          slope: "Slope",
+          tree_type: "Tree type",
+          day_noise: "Day noise",
+          night_noise: "Night noise",
+          noise_disturbance: "Noise disturbances",
+          other_noise_disturbance: "Other noise disturbances",
+          night_light_pollution_amount: "Amount of night light pollution",
+          night_light_pollution_consistency:
+            "Consistency of night light pollution",
+          nearest_water_resources: "Nearest water resource",
+          other_nearest_water_resources: "Other nearest water resource",
+          water_resource_distance: "Water resource distance",
+          water_resource_units: "Water resource units",
+          morning_sunlight: "Morning sunlight",
+          afternoon_sunlight: "Afternoon sunlight"
+        }
       }
     };
   },
+  computed: {
+    ...mapGetters(["toastInfo"])
+  },
+  validations: {
+    payload: {
+      habitat_type: { required },
+      other_habitat_type: {
+        required: requiredIf(model => {
+          return Array.isArray(model.habitat_type) &&
+            model.habitat_type.length !== 0
+            ? model.habitat_type.includes("OT")
+            : false;
+        })
+      },
+      habitat_degradation: { required },
+      other_habitat_degradation: {
+        required: requiredIf(model => {
+          return Array.isArray(model.habitat_degradation) &&
+            model.habitat_degradation.length !== 0
+            ? model.habitat_degradation.includes("OT")
+            : false;
+        })
+      },
+      man_made_structure: { required },
+      other_man_made_structure: {
+        required: requiredIf(model => {
+          return Array.isArray(model.man_made_structure) &&
+            model.man_made_structure.length !== 0
+            ? model.man_made_structure.includes("OT")
+            : false;
+        })
+      },
+      nearby_geography: { required },
+      slope: { required },
+      tree_type: { required, numeric },
+      day_noise: { required },
+      night_noise: { required },
+      noise_disturbance: { required },
+      other_noise_disturbance: {
+        required: requiredIf(model => {
+          return Array.isArray(model.noise_disturbance) &&
+            model.noise_disturbance.length !== 0
+            ? model.noise_disturbance.includes("OT")
+            : false;
+        })
+      },
+      night_light_pollution_amount: { required },
+      night_light_pollution_consistency: { required },
+      nearest_water_resources: { required },
+      other_nearest_water_resources: {
+        required: requiredIf(model => {
+          return Array.isArray(model.nearest_water_resources) &&
+            model.nearest_water_resources.length !== 0
+            ? model.nearest_water_resources.includes("OT")
+            : false;
+        })
+      },
+      water_resource_distance: { required, numeric },
+      water_resource_units: { required },
+      morning_sunlight: { required, numeric },
+      afternoon_sunlight: { required, numeric },
+      surveyed: { required }
+    }
+  },
   methods: {
     submitPayload() {
-      console.log(this.payload); // eslint-disable-line no-console
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+      this.$store
+        .dispatch("createEnvironmentData", {
+          payload: this.payload,
+          id: this.$route.params.id
+        })
+        .finally(() => {
+          if (this.toastInfo.message) {
+            this.toast(this.toastInfo);
+            this.$store.dispatch("clearToast");
+          }
+        });
     }
   }
 };

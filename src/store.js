@@ -21,7 +21,10 @@ export default new Vuex.Store({
       color: "dark",
       showCloseButton: true
     },
-    houses: []
+    houses: [],
+    environment: {},
+    physical: {},
+    observations: {}
   },
   mutations: {
     authUser(state, userData) {
@@ -60,6 +63,27 @@ export default new Vuex.Store({
         state.houses = payload.count > 0 ? payload.results : {};
       } else {
         state.houses.unshift(payload);
+      }
+    },
+    updateEnvironment(state, { data, type }) {
+      if (type === "request") {
+        state.environment = data;
+      } else if (type === "creation") {
+        state.environment.unshift(data);
+      }
+    },
+    updatePhysical(state, { data, type }) {
+      if (type === "request") {
+        state.physical = data;
+      } else if (type === "creation") {
+        state.physical.unshift(data);
+      }
+    },
+    updateObservations(state, { data, type }) {
+      if (type === "request") {
+        state.observations = data;
+      } else if (type === "creation") {
+        state.observations.unshift(data);
       }
     }
   },
@@ -187,12 +211,171 @@ export default new Vuex.Store({
             display: true,
             message: "The house was successfully created!"
           });
-          router.push({ name: "house-list" });
+          router.replace({ name: "house-list" });
         }
       } catch (error) {
         commit("displayToast", {
           display: true,
           message: "An error occured while trying to create a house.",
+          color: "danger"
+        });
+      }
+    },
+    async getEnvironmentData({ commit }, payload) {
+      try {
+        let response = await axios.get(
+          `/api/v1/houses/${payload.id}/environment`
+        );
+        if (response.status === 200) {
+          let results = [];
+          results = response.data.results.reverse();
+          commit("updateEnvironment", {
+            data: results,
+            type: "request"
+          });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An unexpected error occurred."
+        });
+      }
+      return true;
+    },
+    async createEnvironmentData({ commit }, { payload, id }) {
+      try {
+        if (!payload.habitat_type.includes("OT")) {
+          delete payload.other_habitat_type;
+        }
+        if (!payload.habitat_degradation.includes("OT")) {
+          delete payload.other_habitat_degradation;
+        }
+        if (!payload.man_made_structure.includes("OT")) {
+          delete payload.other_man_made_structure;
+        }
+        if (!payload.noise_disturbance.includes("OT")) {
+          delete payload.other_noise_disturbance;
+        }
+        if (!payload.nearest_water_resources.includes("OT")) {
+          delete payload.other_nearest_water_resources;
+        }
+        let response = await axios.post(
+          `/api/v1/houses/${id}/environment`,
+          payload
+        );
+        if (response.status === 201) {
+          commit("updateEnvironment", {
+            data: response.data,
+            type: "creation"
+          });
+          commit("displayToast", {
+            display: true,
+            message: "The environment survey was successfully created!"
+          });
+          router.replace({ name: "house-environment-list", params: { id } });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message:
+            "An error occured while trying to submit the environmental survey.",
+          color: "danger"
+        });
+      }
+    },
+    async getPhysicalData({ commit }, payload) {
+      try {
+        let response = await axios.get(`/api/v1/houses/${payload.id}/physical`);
+        if (response.status === 200) {
+          let results = [];
+          results = response.data.results.reverse();
+          commit("updatePhysical", {
+            data: results,
+            type: "request"
+          });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An unexpected error occurred."
+        });
+      }
+      return true;
+    },
+    async createPhysicalData({ commit }, { payload, id }) {
+      try {
+        if (!payload.mounted_on.includes("OT")) {
+          delete payload.other_mounted_on;
+        }
+        if (!payload.color.includes("OT")) {
+          delete payload.other_color;
+        }
+        let response = await axios.post(
+          `/api/v1/houses/${id}/physical`,
+          payload
+        );
+        if (response.status === 201) {
+          commit("updatePhysical", {
+            data: response.data,
+            type: "creation"
+          });
+          commit("displayToast", {
+            display: true,
+            message: "The physical survey was successfully created!"
+          });
+          router.replace({ name: "house-physical-list", params: { id } });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message:
+            "An error occured while trying to submit the physical survey.",
+          color: "danger"
+        });
+      }
+    },
+    async getObservationData({ commit }, payload) {
+      try {
+        let response = await axios.get(
+          `/api/v1/houses/${payload.id}/observations`
+        );
+        if (response.status === 200) {
+          let results = [];
+          results = response.data.results.reverse();
+          commit("updateObservations", {
+            data: results,
+            type: "request"
+          });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An unexpected error occurred."
+        });
+      }
+      return true;
+    },
+    async createObservationData({ commit }, { payload, id }) {
+      try {
+        let response = await axios.post(
+          `/api/v1/houses/${id}/observations`,
+          payload
+        );
+        if (response.status === 201) {
+          commit("updateObservations", {
+            data: response.data,
+            type: "creation"
+          });
+          commit("displayToast", {
+            display: true,
+            message: "The observation was successfully created!"
+          });
+          router.replace({ name: "house-observation-list", params: { id } });
+        }
+      } catch (error) {
+        commit("displayToast", {
+          display: true,
+          message: "An error occured while trying to submit the observation.",
           color: "danger"
         });
       }
@@ -210,6 +393,15 @@ export default new Vuex.Store({
     },
     houses(state) {
       return state.houses;
+    },
+    environments(state) {
+      return state.environment;
+    },
+    physicals(state) {
+      return state.physical;
+    },
+    observations(state) {
+      return state.observations;
     }
   }
 });
