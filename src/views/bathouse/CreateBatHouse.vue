@@ -6,6 +6,9 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Create Bat House</ion-title>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content padding>
@@ -88,18 +91,6 @@
           ></ion-input>
         </ion-item>
       </ion-list>
-      <ion-text color="danger">
-        <template v-if="errors">
-          <p v-if="errors.status" padding-left>
-            {{ errors.status }}: {{ errors.statusText }}
-          </p>
-          <template v-for="(error_array, error_key) in errors.data">
-            <p v-for="(error, index) in error_array" :key="index" padding-left>
-              {{ error_key }}: {{ error }}
-            </p>
-          </template>
-        </template>
-      </ion-text>
       <ion-button expand="block" @click="submitPayload">Submit Form</ion-button>
     </ion-content>
   </div>
@@ -137,7 +128,6 @@ export default {
         property_type: "",
         other_property_type: ""
       },
-      submitted: false,
       validate: {
         localMessages: {
           required: "The {attribute} field must be filled in!"
@@ -198,8 +188,6 @@ export default {
       });
     },
     submitPayload() {
-      this.submitted = true;
-
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;

@@ -13,7 +13,7 @@
       <form @submit.prevent="onSubmit">
         <ion-list>
           <ion-item>
-            <ion-label position="stacked" color="primary">Username</ion-label>
+            <ion-label position="floating" color="primary">Username</ion-label>
             <ion-input
               :value="payload.username"
               name="username"
@@ -34,7 +34,7 @@
           </ion-text>
 
           <ion-item>
-            <ion-label position="stacked" color="primary">Password</ion-label>
+            <ion-label position="floating" color="primary">Password</ion-label>
             <ion-input
               :value="payload.password"
               name="password"
@@ -52,7 +52,6 @@
             </p>
           </ion-text>
         </ion-list>
-
         <ion-text v-if="errors" color="danger">
           <p v-if="errors.status" padding-left>
             {{ errors.status }}: {{ errors.statusText }}
@@ -63,9 +62,7 @@
             </p>
           </template>
         </ion-text>
-        <div padding>
-          <ion-button type="submit" expand="block">Login</ion-button>
-        </div>
+        <ion-button type="submit" expand="block">Login</ion-button>
       </form>
     </ion-content>
   </div>
