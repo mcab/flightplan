@@ -1,8 +1,19 @@
 import Vue from "vue";
 import { IonicVueRouter } from "@ionic/vue";
+import store from "@/store";
 import About from "@/views/About.vue";
 import Home from "@/views/Home.vue";
-import store from "@/store";
+import Account from "@/views/Account.vue";
+import Login from "@/views/auth/Login.vue";
+import Signup from "@/views/auth/Signup.vue";
+import CreateBatHouse from "@/views/bathouse/CreateBatHouse.vue";
+import ListBatHouse from "@/views/bathouse/ListBatHouse.vue";
+import CreateEnvironmentFeatures from "@/views/bathouse/CreateEnvironmentFeatures.vue";
+import ListEnvironmentFeatures from "@/views/bathouse/ListEnvironmentFeatures.vue";
+import CreatePhysicalFeatures from "@/views/bathouse/CreatePhysicalFeatures.vue";
+import ListPhysicalFeatures from "@/views/bathouse/ListPhysicalFeatures.vue";
+import CreateObservation from "@/views/bathouse/CreateObservation.vue";
+import ListObservation from "@/views/bathouse/ListObservation.vue";
 
 Vue.use(IonicVueRouter);
 
@@ -31,69 +42,66 @@ export default new IonicVueRouter({
     {
       path: "/account",
       name: "account",
-      component: () =>
-        import(/* webpackChunkName: "auth" */ "@/views/Account.vue"),
+      component: Account,
       beforeEnter: privateRoute
     },
     {
       path: "/login",
       name: "login",
-      component: () =>
-        import(/* webpackChunkName: "auth" */ "@/views/auth/Login.vue")
+      component: Login
     },
     {
       path: "/signup",
       name: "signup",
-      component: () =>
-        import(/* webpackChunkName: "auth" */ "@/views/auth/Signup.vue")
+      component: Signup
     },
     {
       path: "/houses",
       name: "house-list",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListBatHouse.vue")
+      component: ListBatHouse,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/create",
       name: "house-create",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateBatHouse.vue")
+      component: CreateBatHouse,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/:id/environment",
       name: "house-environment-list",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListEnvironmentFeatures.vue")
+      component: ListEnvironmentFeatures,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/:id/environment/create",
       name: "house-environment-create",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateEnvironmentFeatures.vue")
+      component: CreateEnvironmentFeatures,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/:id/physical",
       name: "house-physical-list",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListPhysicalFeatures.vue")
+      component: ListPhysicalFeatures,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/:id/physical/create",
       name: "house-physical-create",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreatePhysicalFeatures.vue")
+      component: CreatePhysicalFeatures,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/:id/observations",
       name: "house-observation-list",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/ListObservation.vue")
+      component: ListObservation,
+      beforeEnter: privateRoute
     },
     {
       path: "/houses/:id/observations/create",
       name: "house-observation-create",
-      component: () =>
-        import(/* webpackChunkName: "bathouse" */ "@/views/bathouse/CreateObservation.vue")
+      component: CreateObservation,
+      beforeEnter: privateRoute
     },
     {
       path: "*",

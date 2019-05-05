@@ -211,7 +211,7 @@ export default new Vuex.Store({
             display: true,
             message: "The house was successfully created!"
           });
-          router.replace({ name: "house-list" });
+          router.push({ name: "house-list" });
         }
       } catch (error) {
         commit("displayToast", {
@@ -272,7 +272,7 @@ export default new Vuex.Store({
             display: true,
             message: "The environment survey was successfully created!"
           });
-          router.replace({ name: "house-environment-list", params: { id } });
+          router.push({ name: "house-environment-list", params: { id } });
         }
       } catch (error) {
         commit("displayToast", {
@@ -323,7 +323,7 @@ export default new Vuex.Store({
             display: true,
             message: "The physical survey was successfully created!"
           });
-          router.replace({ name: "house-physical-list", params: { id } });
+          router.push({ name: "house-physical-list", params: { id } });
         }
       } catch (error) {
         commit("displayToast", {
@@ -370,7 +370,7 @@ export default new Vuex.Store({
             display: true,
             message: "The observation was successfully created!"
           });
-          router.replace({ name: "house-observation-list", params: { id } });
+          router.push({ name: "house-observation-list", params: { id } });
         }
       } catch (error) {
         commit("displayToast", {
