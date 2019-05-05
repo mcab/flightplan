@@ -27,6 +27,12 @@
         deal with insects and pests outside of your home is always an
         appreciated thought.
       </p>
+      <br>
+      <h3>Questions? Contact Us</h3>
+      <p><b>Dr. Cisneros:</b> laura.cisneros@uconn.edu</p>
+      <p><b>Jamie Masthay:</b> jcmasthay@gmail.com</p>
+      <p><b>CT DEEP (Department of Energy and Environmental Protection):</b><br>deep.webmaster@ct.gov<br>(860)-424-3000<br>Connecticut Department of Energy and Environmental Protection<br>79 Elm Street,<br>Hartford, CT 06106-5127 (mailing address)</p>
+
     </ion-content>
   </div>
 </template>
