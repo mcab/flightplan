@@ -14,6 +14,8 @@ import CreatePhysicalFeatures from "@/views/bathouse/CreatePhysicalFeatures.vue"
 import ListPhysicalFeatures from "@/views/bathouse/ListPhysicalFeatures.vue";
 import CreateObservation from "@/views/bathouse/CreateObservation.vue";
 import ListObservation from "@/views/bathouse/ListObservation.vue";
+import Monitor from "@/views/Monitor.vue";
+import Species from "@/views/Species.vue";
 
 Vue.use(IonicVueRouter);
 
@@ -106,6 +108,16 @@ export default new IonicVueRouter({
     {
       path: "*",
       redirect: { name: "home" }
+    },
+    {
+      path: "/monitor",
+      name: "monitor",
+      component: Monitor
+    },
+    {
+      path: "/species",
+      name: "species",
+      component: Species
     }
   ]
 });

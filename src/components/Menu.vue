@@ -83,6 +83,16 @@ export default {
           title: "About",
           url: "/about",
           icon: "information-circle"
+        },
+        {
+          title: "How To Monitor",
+          url: "/monitor",
+          icon: "clipboard"
+        },
+        {
+          title: "Bat Species",
+          url: "/species",
+          icon: "book"
         }
       ]
     };
