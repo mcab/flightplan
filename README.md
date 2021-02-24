@@ -1,5 +1,11 @@
 # flight
 
+This acts as the frontend for the Bat House senior design project.
+
+At its core, it's an Ionic project that interfaces with [hiber](https://github.com/mcab/hiber), a Django-powered server.
+
+It's archived because of lack of time for maintaining the project.
+
 ## Project setup
 ```
 npm install
